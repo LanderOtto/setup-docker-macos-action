@@ -117,8 +117,8 @@ runs:
         COLIMA_ADDITIONAL_OPTIONS: ${{ inputs.colima-additional-options }}
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
-        CPU_COUNT=$(sysctl -n hw.ncpu)
-        MEMORY=$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')
+        CPU_COUNT=$(echo "$(sysctl -n hw.ncpu)/2" | bc)
+        MEMORY=$(echo "$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')/2" | bc) 
         COLIMA_ARGS="--cpu $CPU_COUNT --memory $MEMORY --arch x86_64 --vm-type=vz --mount-type=virtiofs"
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
